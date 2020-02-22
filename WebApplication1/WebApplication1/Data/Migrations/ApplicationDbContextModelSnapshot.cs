@@ -246,21 +246,22 @@ namespace WebApplication1.Data.Migrations
                     b.Property<DateTime>("BookDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ModuleId")
+                    b.Property<int>("BuildingId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ModuleCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
+                    b.Property<string>("StaffName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("TimeSlotId")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TimeSlotId");
 
                     b.ToTable("Bookings");
                 });
@@ -393,15 +394,6 @@ namespace WebApplication1.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Booking", b =>
-                {
-                    b.HasOne("WebApplication1.Models.TimeSlot", "TimeSlot")
-                        .WithMany()
-                        .HasForeignKey("TimeSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
