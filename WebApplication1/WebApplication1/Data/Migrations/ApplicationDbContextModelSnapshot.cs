@@ -249,6 +249,9 @@ namespace WebApplication1.Data.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ModuleCode")
                         .HasColumnType("nvarchar(max)");
 
