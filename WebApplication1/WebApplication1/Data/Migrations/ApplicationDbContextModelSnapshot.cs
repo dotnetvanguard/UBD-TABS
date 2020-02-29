@@ -263,6 +263,8 @@ namespace WebApplication1.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BuildingId");
+
                     b.HasIndex("RoomId");
 
                     b.HasIndex("TimeSlotId");
@@ -346,6 +348,9 @@ namespace WebApplication1.Data.Migrations
                     b.Property<bool>("IsBooked")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
@@ -407,6 +412,12 @@ namespace WebApplication1.Data.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Booking", b =>
                 {
+                    b.HasOne("WebApplication1.Models.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApplication1.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
