@@ -17,7 +17,6 @@ namespace DotNetAngularApp.Controllers
         {
             this.mapper = mapper;
             this.context = context;
-
         }
 
         [HttpGet("/api/timeslots")]
