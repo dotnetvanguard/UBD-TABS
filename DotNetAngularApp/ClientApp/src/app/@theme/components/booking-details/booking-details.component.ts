@@ -1,7 +1,7 @@
 import { AuthService } from './../../../services/auth.service';
 import { BookingService } from './../../../services/booking.service';
 import { ToastyService } from 'ng2-toasty';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
