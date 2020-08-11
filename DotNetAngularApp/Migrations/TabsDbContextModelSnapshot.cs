@@ -19,7 +19,7 @@ namespace DotNetAngularApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DotNetAngularApp.Models.Booking", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.BookingTimeSlot", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingTimeSlot", b =>
                 {
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
@@ -71,7 +71,7 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("BookingTimeSlots");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.Building", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Building", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,7 +88,46 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.Room", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FacultyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Faculty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Faculties");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +152,7 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.TimeSlot", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.TimeSlot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,33 +170,42 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("TimeSlots");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.Booking", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
                 {
-                    b.HasOne("DotNetAngularApp.Models.Room", "Room")
+                    b.HasOne("DotNetAngularApp.Core.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.BookingTimeSlot", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingTimeSlot", b =>
                 {
-                    b.HasOne("DotNetAngularApp.Models.Booking", "Booking")
+                    b.HasOne("DotNetAngularApp.Core.Models.Booking", "Booking")
                         .WithMany("TimeSlots")
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DotNetAngularApp.Models.TimeSlot", "TimeSlot")
+                    b.HasOne("DotNetAngularApp.Core.Models.TimeSlot", "TimeSlot")
                         .WithMany()
                         .HasForeignKey("TimeSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Models.Room", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Course", b =>
                 {
-                    b.HasOne("DotNetAngularApp.Models.Building", "Building")
+                    b.HasOne("DotNetAngularApp.Core.Models.Faculty", "Faculty")
+                        .WithMany("Courses")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Room", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Building", "Building")
                         .WithMany("Rooms")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
