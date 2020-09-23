@@ -29,23 +29,6 @@ namespace DotNetAngularApp.Migrations
                     b.Property<DateTime>("BookDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ContactEmail")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ContactName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("ContactPhone")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.Property<string>("Purpose")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
@@ -54,6 +37,21 @@ namespace DotNetAngularApp.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingModule", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingId", "ModuleId");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("BookingModules");
                 });
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingTimeSlot", b =>
@@ -127,6 +125,64 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Faculties");
                 });
 
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Lecturer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Lecturers");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Module", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Modules");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.ModuleLecturer", b =>
+                {
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ModuleId", "LecturerId");
+
+                    b.HasIndex("LecturerId");
+
+                    b.ToTable("ModuleLecturers");
+                });
+
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -179,6 +235,21 @@ namespace DotNetAngularApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingModule", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Booking", "Booking")
+                        .WithMany("Modules")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetAngularApp.Core.Models.Module", "Module")
+                        .WithMany()
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingTimeSlot", b =>
                 {
                     b.HasOne("DotNetAngularApp.Core.Models.Booking", "Booking")
@@ -199,6 +270,21 @@ namespace DotNetAngularApp.Migrations
                     b.HasOne("DotNetAngularApp.Core.Models.Faculty", "Faculty")
                         .WithMany("Courses")
                         .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.ModuleLecturer", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Lecturer", "Lecturer")
+                        .WithMany()
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetAngularApp.Core.Models.Module", "Module")
+                        .WithMany("Lecturers")
+                        .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
