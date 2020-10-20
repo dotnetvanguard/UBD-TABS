@@ -32,9 +32,14 @@ namespace DotNetAngularApp.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SemesterId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("SemesterId");
 
                     b.ToTable("Bookings");
                 });
@@ -80,6 +85,9 @@ namespace DotNetAngularApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
+
+                    b.Property<string>("OtherName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -196,6 +204,9 @@ namespace DotNetAngularApp.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(255)")
@@ -206,6 +217,29 @@ namespace DotNetAngularApp.Migrations
                     b.HasIndex("BuildingId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Semester", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Session")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Semesters");
                 });
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.TimeSlot", b =>
@@ -231,6 +265,12 @@ namespace DotNetAngularApp.Migrations
                     b.HasOne("DotNetAngularApp.Core.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetAngularApp.Core.Models.Semester", "Semester")
+                        .WithMany("Bookings")
+                        .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
