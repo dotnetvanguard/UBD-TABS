@@ -87,7 +87,8 @@ namespace DotNetAngularApp.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("OtherName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
@@ -205,7 +206,8 @@ namespace DotNetAngularApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .IsRequired()
