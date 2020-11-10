@@ -95,28 +95,6 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Core.Models.Course", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("FacultyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FacultyId");
-
-                    b.ToTable("Courses");
-                });
-
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Faculty", b =>
                 {
                     b.Property<int>("Id")
@@ -128,6 +106,9 @@ namespace DotNetAngularApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -172,7 +153,12 @@ namespace DotNetAngularApp.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
 
+                    b.Property<int>("ProgrammeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProgrammeId");
 
                     b.ToTable("Modules");
                 });
@@ -190,6 +176,31 @@ namespace DotNetAngularApp.Migrations
                     b.HasIndex("LecturerId");
 
                     b.ToTable("ModuleLecturers");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Programme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FacultyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Programmes");
                 });
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Room", b =>
@@ -307,11 +318,11 @@ namespace DotNetAngularApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Core.Models.Course", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Module", b =>
                 {
-                    b.HasOne("DotNetAngularApp.Core.Models.Faculty", "Faculty")
-                        .WithMany("Courses")
-                        .HasForeignKey("FacultyId")
+                    b.HasOne("DotNetAngularApp.Core.Models.Programme", "Programme")
+                        .WithMany("Modules")
+                        .HasForeignKey("ProgrammeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -327,6 +338,15 @@ namespace DotNetAngularApp.Migrations
                     b.HasOne("DotNetAngularApp.Core.Models.Module", "Module")
                         .WithMany("Lecturers")
                         .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Programme", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Faculty", "Faculty")
+                        .WithMany("Programmes")
+                        .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
