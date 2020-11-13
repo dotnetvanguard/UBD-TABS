@@ -29,15 +29,10 @@ namespace DotNetAngularApp.Migrations
                     b.Property<DateTime>("BookDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SemesterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
 
                     b.HasIndex("SemesterId");
 
@@ -57,6 +52,21 @@ namespace DotNetAngularApp.Migrations
                     b.HasIndex("ModuleId");
 
                     b.ToTable("BookingModules");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingRoom", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingId", "RoomId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("BookingRooms");
                 });
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingTimeSlot", b =>
@@ -275,12 +285,6 @@ namespace DotNetAngularApp.Migrations
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
                 {
-                    b.HasOne("DotNetAngularApp.Core.Models.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DotNetAngularApp.Core.Models.Semester", "Semester")
                         .WithMany("Bookings")
                         .HasForeignKey("SemesterId")
@@ -299,6 +303,21 @@ namespace DotNetAngularApp.Migrations
                     b.HasOne("DotNetAngularApp.Core.Models.Module", "Module")
                         .WithMany()
                         .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookingRoom", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Booking", "Booking")
+                        .WithMany("Rooms")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetAngularApp.Core.Models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
