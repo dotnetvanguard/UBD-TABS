@@ -29,6 +29,10 @@ namespace DotNetAngularApp.Migrations
                     b.Property<DateTime>("BookDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Purpose")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
                     b.Property<int>("SemesterId")
                         .HasColumnType("int");
 
@@ -118,7 +122,8 @@ namespace DotNetAngularApp.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("ShortName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
@@ -131,6 +136,10 @@ namespace DotNetAngularApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -162,7 +171,8 @@ namespace DotNetAngularApp.Migrations
                         .HasMaxLength(255);
 
                     b.Property<string>("ShortName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
