@@ -19,15 +19,32 @@ namespace DotNetAngularApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookDate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("BookDate")
+                    b.Property<int?>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("BookDates");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(255)")
@@ -291,6 +308,13 @@ namespace DotNetAngularApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TimeSlots");
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.BookDate", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Booking", null)
+                        .WithMany("BookDates")
+                        .HasForeignKey("BookingId");
                 });
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
