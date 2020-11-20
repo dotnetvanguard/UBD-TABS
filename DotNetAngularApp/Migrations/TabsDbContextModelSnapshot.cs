@@ -26,7 +26,7 @@ namespace DotNetAngularApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BookingId")
+                    b.Property<int>("BookingId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -314,7 +314,9 @@ namespace DotNetAngularApp.Migrations
                 {
                     b.HasOne("DotNetAngularApp.Core.Models.Booking", null)
                         .WithMany("BookDates")
-                        .HasForeignKey("BookingId");
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Booking", b =>
