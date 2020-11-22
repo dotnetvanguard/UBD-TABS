@@ -292,6 +292,21 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Semesters");
                 });
 
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.SemesterModule", b =>
+                {
+                    b.Property<int>("SemesterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SemesterId", "ModuleId");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("SemesterModules");
+                });
+
             modelBuilder.Entity("DotNetAngularApp.Core.Models.TimeSlot", b =>
                 {
                     b.Property<int>("Id")
@@ -411,6 +426,21 @@ namespace DotNetAngularApp.Migrations
                     b.HasOne("DotNetAngularApp.Core.Models.Building", "Building")
                         .WithMany("Rooms")
                         .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.SemesterModule", b =>
+                {
+                    b.HasOne("DotNetAngularApp.Core.Models.Module", "Module")
+                        .WithMany()
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetAngularApp.Core.Models.Semester", "Semester")
+                        .WithMany("Modules")
+                        .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
