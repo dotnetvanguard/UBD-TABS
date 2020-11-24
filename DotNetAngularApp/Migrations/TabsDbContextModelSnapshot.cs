@@ -235,21 +235,6 @@ namespace DotNetAngularApp.Migrations
                     b.ToTable("Modules");
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Core.Models.ModuleOffering", b =>
-                {
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfferingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ModuleId", "OfferingId");
-
-                    b.HasIndex("OfferingId");
-
-                    b.ToTable("ModuleOfferings");
-                });
-
             modelBuilder.Entity("DotNetAngularApp.Core.Models.Offering", b =>
                 {
                     b.Property<int>("Id")
@@ -257,10 +242,15 @@ namespace DotNetAngularApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SemesterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ModuleId");
 
                     b.HasIndex("SemesterId");
 
@@ -424,23 +414,14 @@ namespace DotNetAngularApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DotNetAngularApp.Core.Models.ModuleOffering", b =>
+            modelBuilder.Entity("DotNetAngularApp.Core.Models.Offering", b =>
                 {
                     b.HasOne("DotNetAngularApp.Core.Models.Module", "Module")
-                        .WithMany()
+                        .WithMany("Offerings")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DotNetAngularApp.Core.Models.Offering", "Offering")
-                        .WithMany("Modules")
-                        .HasForeignKey("OfferingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DotNetAngularApp.Core.Models.Offering", b =>
-                {
                     b.HasOne("DotNetAngularApp.Core.Models.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
